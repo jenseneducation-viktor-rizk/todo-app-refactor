@@ -2,7 +2,7 @@
 <li>
     <input type="checkbox" v-on:click="emitCheckBox">
     <p v-if="!editMode">{{todo.content}}</p>
-    <input v-else type="text" v-model="inputData" >
+    <input v-else type="text" v-model="content" >
     <button v-on:click="emitRemove">Delete</button>
     <button v-on:click="toggleEditMode"> {{editMode ? 'Save' : 'Edit'}} </button>
 </li>
@@ -14,14 +14,14 @@ export default {
     },
     data: function(){return{
         editMode: false,
-        inputData: this.content
+        content: this.todo.content
     }},
     
     methods: {
         toggleEditMode(){
             this.editMode = !this.editMode
             if (!this.editMode) {
-                this.$emit('update', this.inputData)
+                this.$emit('update', this.content)
             }
         },
         emitRemove(){
