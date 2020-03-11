@@ -12,7 +12,7 @@ export default {
     props: {
         todo: Object
     },
-    data: function(){return{
+    data(){return{
         editMode: false,
         content: this.todo.content
     }},

@@ -19,32 +19,40 @@
 import TodoItem from './TodoItem'
 export default {
     components: {TodoItem},
-    data: () => ({
-        todos: [],
+    data(){return{
         content: ""
-    }),
+    }},
     computed: {
+        todos(){
+            return this.$store.state.todos
+        },
+        
         uncheckedTodos(){
             return this.todos.reduce((acc,todo) => acc + !todo.done, 0)
         }
     },
+    async mounted(){
+            await this.$store.dispatch('listTodos')
+        },
     
     methods: {
-        createTodo(){
-            this.todos.push({
-                id: Date.now(),
-                content: this.content,
-                done: false
-            })
+        async createTodo(){
+            this.$store.dispatch('pushTodos', this.content)
         },
         removeTodo(id){
-            this.todos = this.todos.filter(todo => todo.id != id)
-        },
-        updateCheck(todo){
-            todo.done = !todo.done 
+            this.$store.dispatch('removeThisTodo', id)       
+            },
+        updateCheck(todoItem){
+            this.$store.dispatch('updateThisCheck', todoItem)
         },
         updateTodo(todo, newContent) {
-            todo.content = newContent
+            
+            const newData = {
+                id: todo.id,
+                content: newContent
+            }
+            this.$store.dispatch('updateThisTodo', newData)
+
         }
     }
 }
